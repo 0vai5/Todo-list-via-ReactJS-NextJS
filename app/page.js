@@ -21,9 +21,17 @@ const Page = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setMainTask([...mainTask, { title, desc }]);
-    setTitle("");
-    setDesc("");
+
+    if (title.trim() === "" && desc.trim() === "") {
+      // Both title and desc fields are empty, do nothing or display an alert
+      // For example, you can display an alert:
+      alert("Please enter a title or description for the task.");
+    } else {
+      // At least one of the fields has a value, so add the task
+      setMainTask([...mainTask, { title, desc }]);
+      setTitle("");
+      setDesc("");
+    }
   };
 
   const deleteHandler = (i) => {
@@ -33,44 +41,42 @@ const Page = () => {
   };
 
   let renderTask = (
-    <h2 className="text-2xl font-semibold">No Task Available</h2>
+    <h2 className="text-2xl font-semibold text-center">No Task Available</h2>
   );
   if (mainTask.length > 0) {
     renderTask = mainTask.map((t, i) => (
       <>
-      <li key={i} className="mb-5 flex justify-between w-full">
-        <div className="flex flex-col">
-          <h1 className="font-bold text-5xl">{t.title}</h1>
-          <p className="text-2xl">{t.desc}</p>
-        </div>
-        <div className="flex flex-col justify-start">
-          <button
-            onClick={() => {
-              deleteHandler(i);
-            }}
-            className="px-5 py-3 bg-red-400 hover:bg-gray-800 rounded shadow my-2 text-white text-lg font-semibold"
-          >
-            Delete
-          </button>
-        </div>
-      </li>
-      <hr className="border-zinc-900 border-2" />
+        <li key={i} className="mb-5 flex flex-col justify-center items-center">
+          <div className="flex flex-col">
+            <h1 className="font-bold text-5xl text-center">{t.title}</h1>
+            <p className="text-2xl text-center">{t.desc}</p>
+          </div>
+          <div className="flex flex-col justify-start">
+            <button
+              onClick={() => {
+                deleteHandler(i);
+              }}
+              className="px-5 py-3 bg-red-400 hover:bg-gray-800 rounded shadow my-2 text-white text-lg font-semibold w-24"
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+        <hr className="border-zinc-900 border-2" />
       </>
     ));
-    
   }
-  
 
   return (
     <>
-    
-      <h1 className="bg-black text-5xl text-white text-center p-5 font-extrabold">
+    <section className="flex flex-col justify-center items-center">
+      <h1 className="bg-black text-5xl text-white text-center p-5 font-extrabold w-full">
         ToDo List
       </h1>
-      <form onSubmit={submitHandler} className="w-full">
+      <form onSubmit={submitHandler} className="w-full flex justify-center items-center flex-col">
         <input
           type="text"
-          className="m-10 px-5 py-4 text-2xl  border-solid border-4 border-zinc-950"
+          className="m-10 px-5 py-4 text-2xl  border-solid border-4 border-zinc-950 w-80"
           placeholder="Enter title here"
           value={title}
           onChange={(e) => {
@@ -79,7 +85,7 @@ const Page = () => {
         />
         <input
           type="text"
-          className="m-10 px-5 py-4 text-2xl  border-solid border-4 border-zinc-950"
+          className="m-10 px-5 py-4 text-2xl  border-solid border-4 border-zinc-950 leading-7 w-80"
           placeholder="Enter Description here"
           value={desc}
           onChange={(e) => {
@@ -90,9 +96,12 @@ const Page = () => {
           Add Task
         </button>
       </form>
+      </section>
 
       <hr className="border-zinc-900 border-5" />
-      <div className="p-10">{renderTask}</div>
+     <div className="p-10">{renderTask}</div>
+        
+      
     </>
   );
 };
